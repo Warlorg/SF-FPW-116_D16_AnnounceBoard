@@ -1,0 +1,18 @@
+{% extends 'flatpages/default.html' %}
+
+
+{% block title %}
+Reaction moderation
+{% endblock title %}
+
+{% block content %}
+<h1>Reactions</h1>
+<hr>
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="hidden" id="announce_id" value="{{ announce.id }}">
+    <!-- <input type="submit" value="Записать"> -->
+    <button type="submit">Record</button>
+</form>
+{% endblock content %}

@@ -1,0 +1,19 @@
+{% extends 'flatpages/default.html' %}
+
+
+{% block title %}
+Announce moderation
+{% endblock title %}
+
+{% block content %}
+<h1>Announces</h1>
+<hr>
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <!-- <input type="submit" value="Записать"> -->
+    <button type="submit">Record</button>
+
+</form>
+{% endblock content %}

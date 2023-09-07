@@ -1,0 +1,18 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+<hr>
+  <h3>React on: {{ React_id.announce.title }} by {{ React_id.announce.author }}</h3>
+
+  <p><strong>Author:</strong> {{ React_id.author }}</p>
+  <p><strong>Text:</strong> {{ React_id.text }}</p>
+  <p><strong>Date:</strong> {{ React_id.dateCreation }}</p>
+  <p><strong>Status:</strong>
+    {% if React_id.status == False %}
+    Not accepted
+    {% else %}
+    Accepted
+    {% endif %}
+  </p>
+
+{% endblock %}

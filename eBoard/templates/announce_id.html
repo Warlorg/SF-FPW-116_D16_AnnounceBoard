@@ -1,0 +1,49 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/default.html' %}
+
+
+{% block title %}
+Content
+{% endblock title %}
+
+{% block content %}
+{% if Announce_id %}
+    <h5>
+        Title: <i>{{ Announce_id.title|truncatewords:2 }}</i>&emsp;&emsp;
+        Publication date: {{ Announce_id.dateCreation|date:'d M Y' }} &emsp;
+        Category: {{ Announce_id.category }}
+    </h5>
+    <h5>Content: {{ Announce_id.text }}</h5>
+
+    <div class="d-flex justify-content-md-center">
+        {% if reacts %}
+            {% for react in reacts %}
+                {% if react.status == False %}
+                <ul>
+                    <li>
+                        <h4><b>Reaction:</b></h4>
+                        <a href="{% url 'react_detail' pk=react.id %}">{{ react.text|truncatewords:2 }}</a>
+                        (Author: {{react.author}}) {{react.status}}
+                    </li>
+                </ul>
+
+                <div class="d-flex justify-content:flex-end mb-5">
+                    <a class="btn btn-primary text-uppercase" href="{% url 'accept' react_id %}">Accept →</a>
+                </div>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+        <h6>No reactions found!</h6>
+        {% endif %}
+    </div>
+    <!-- Divider-->
+    <hr class="my-4" />
+    <!-- Pager-->
+    <div class="d-flex justify-content-center mb-4">
+        <a class="btn btn-primary text-uppercase" href="{% url 'reaction_create' pk=Announce_id.id %}">
+            Leave reaction →</a>
+    </div>
+{% else %}
+    <h2>Publication not found!</h2>
+{% endif %}
+{% endblock content %}
