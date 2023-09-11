@@ -1,40 +1,25 @@
-<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
 {% extends 'flatpages/default.html' %}
 {% load custom_tags %}
 
 {% block title %}
-All announces
+{{ user.get_username }} announces
 {% endblock title %}
 
-<!-- В контенте на странице мы выводим все новости -->
 {% block content %}
-<h1 class="text-center">All announces<span class="text-muted fs-6 fw-normal">
+<h1 class="text-center">List of my announces<span class="text-muted fs-6 fw-normal">
     ({{ page_obj.paginator.count }})</span></h1>
-    <!-- Вот так используем новый тег-->
     <h3>{% current_time '%b %d %Y' %}</h3>
-    <h3>{{ next_announce|default_if_none:"Please, watch for announce feed update!" }}</h3>
     <hr>
-
-    <hr>
-
-    {% if Announces %}
-        <table> <!-- Начинаем описывать таблицу -->
-           <tr> <!-- Добавляем строку -->
-               <td>Announce author&emsp;&emsp;</td>
-               <td> <!-- Добавляем ячейку в строку -->
-                   Announce title &emsp;&emsp;
-               </td>
-               <td> <!-- Добавляем ещё одну ячейку в строку и так далее -->
-                   Date of posting &emsp;&emsp;
-               </td>
+    {% if MyAnnounces %}
+        <table>
+           <tr>
+               <td>Announce title &emsp;&emsp;</td>
+               <td>Date of posting &emsp;&emsp;</td>
                <td>Content &emsp;&emsp;&emsp;&emsp;</td>
                <td>Category &emsp;&emsp;</td>
-               <td>Reactions</td>
-
            </tr>
-           {% for announce in Announces %}
+            {% for announce in MyAnnounces %}
            <tr>
-               <td>{{ announce.author }}</td>
                <td>
                    <a href="{% url 'announce_detail' pk=announce.id %}">{{ announce.title|truncatewords:2 }}</a>
                </td>
@@ -43,12 +28,10 @@ All announces
                <td>{{ announce.category }}</td>
            </tr>
             {% endfor %}
-
-       </table>
+               </table>
     {% else %}
        <h2>No announce found!</h2>
     {% endif %}
-
 <div class="text-center">
     {# Добавляем пагинацию на страницу #}
 

@@ -15,4 +15,4 @@ class AnnounceForm(forms.ModelForm):
 class UserReactionForm(forms.ModelForm):
     class Meta:
         model = UserReaction
-        fields = ('announce', 'text')
+        fields = ('text', )

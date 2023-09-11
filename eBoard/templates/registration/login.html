@@ -1,17 +1,17 @@
 {% extends 'flatpages/default.html' %}
 
 {% block title %}
-LogIn
+Log In or Register
 {% endblock title %}
 
 {% block content %}
-<h1>Log In</h1>
+<h1>Log In or Register</h1>
 <hr>
 <form method="post" action="{% url 'login' %}">
 {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="login">
+    <input type="submit" value="Login">
     <input type="hidden" name="next" value="{{ next }}">
 </form>
-
+<p><a href="{% url 'signing_up' %}">Sign In if you're not registered yet</a></p>
 {% endblock %}

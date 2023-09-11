@@ -40,4 +40,4 @@ class UserReaction(models.Model):
 		return 'Reaction by {} on {}'.format(self.author, self.announce)
 
 	def get_absolute_url(self):
-		return f'/announce/{self.id}'
+		return f'/reacts/{self.id}'

@@ -29,6 +29,18 @@ class AnnounceList(ListView):
         return context
 
 
+class MyAnnounces(LoginRequiredMixin, ListView):
+    model = Announce  # Указываем модель, объекты которой будут выводиться
+    ordering = '-dateCreation'  # Поле, которое будет использоваться для сортировки объектов
+    template_name = 'my_announces.html'  # Указываем имя шаблона, в котором будут все инструкции о том,
+    # как именно пользователю должны быть показаны наши объекты
+    context_object_name = 'MyAnnounces'
+    paginate_by = 5
+
+    def get_queryset(self):
+        return Announce.objects.filter(author=self.request.user)
+
+
 class AnnounceDetail(DetailView):
     model = Announce
     template_name = 'announce_id.html'
@@ -44,21 +56,16 @@ class AnnounceDetail(DetailView):
 class ReactionList(ListView):
     model = UserReaction
     ordering = '-dateCreation'  # Поле, которое будет использоваться для сортировки объектов
-    template_name = 'reactions.html'  # Указываем имя шаблона, в котором будут все инструкции о том,
+    template_name = 'reacts_to_announces.html'  # Указываем имя шаблона, в котором будут все инструкции о том,
     # как именно пользователю должны быть показаны наши объекты
-    context_object_name = 'Reaction'
+    context_object_name = 'Reacts'
     paginate_by = 4
 
     def get_queryset(self):
-        return UserReaction.objects.filter(userreaction_announce__announce_user=self.request.user)
+        return UserReaction.objects.filter(announce__author=self.request.user)
 
     def get_context_data(self, **kwargs):
-        # С помощью super() мы обращаемся к родительским классам
-        # и вызываем у них метод get_context_data с теми же аргументами,
-        # что и были переданы нам.
-        # В ответе мы должны получить словарь.
         context = super().get_context_data(**kwargs)
-        # К словарю добавим текущую дату в ключ 'time_now'.
         context['time_now'] = datetime.utcnow()
         return context
 
@@ -120,4 +127,4 @@ def react_accept(request, react_id, announce_id):
     react = get_object_or_404(UserReaction, id=react_id)
     react.status = True  # Изменяем статус на "Подтвержден"
     react.save()
-    return redirect('content:react_detail', pk=announce_id)
+    return redirect('announce_detail', pk=announce_id)

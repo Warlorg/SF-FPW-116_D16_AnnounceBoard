@@ -28,4 +28,5 @@ urlpatterns = [
     path("accounts/", include("accounts.urls")),
     path('announce/', include('content.urls')),
     path('', RedirectView.as_view(url='/enter/', permanent=True)),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

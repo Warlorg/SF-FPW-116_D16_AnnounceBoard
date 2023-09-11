@@ -9,40 +9,44 @@ Content
 {% block content %}
 {% if Announce_id %}
     <h5>
+        Author: {{ Announce_id.author }}&emsp;&emsp;
         Title: <i>{{ Announce_id.title|truncatewords:2 }}</i>&emsp;&emsp;
         Publication date: {{ Announce_id.dateCreation|date:'d M Y' }} &emsp;
         Category: {{ Announce_id.category }}
     </h5>
-    <h5>Content: {{ Announce_id.text }}</h5>
+    <h5>Content: {{ Announce_id.text|truncatewords:5 }}</h5>
 
     <div class="d-flex justify-content-md-center">
         {% if reacts %}
+        <ul>
             {% for react in reacts %}
-                {% if react.status == False %}
-                <ul>
-                    <li>
-                        <h4><b>Reaction:</b></h4>
-                        <a href="{% url 'react_detail' pk=react.id %}">{{ react.text|truncatewords:2 }}</a>
-                        (Author: {{react.author}}) {{react.status}}
-                    </li>
-                </ul>
-
-                <div class="d-flex justify-content:flex-end mb-5">
-                    <a class="btn btn-primary text-uppercase" href="{% url 'accept' react_id %}">Accept →</a>
-                </div>
-                {% endif %}
+            <li>
+                <h4><b>Reaction:</b></h4>
+                <a href="{% url 'react_detail' pk=react.id %}">{{ react.text|truncatewords:2 }}</a>
+                        (Author: {{react.author}}, Status:
+                {% if react.status == False or react.status == None %}
+                Not accepted
+                {% else %}
+                Accepted
+                {% endif %})
+            </li>
+        </ul>
             {% endfor %}
         {% else %}
-        <h6>No reactions found!</h6>
+            <h4>No reactions found!</h4>
         {% endif %}
     </div>
     <!-- Divider-->
     <hr class="my-4" />
     <!-- Pager-->
+    {% if request.user.is_authenticated and request.user != react.author %}
     <div class="d-flex justify-content-center mb-4">
         <a class="btn btn-primary text-uppercase" href="{% url 'reaction_create' pk=Announce_id.id %}">
             Leave reaction →</a>
     </div>
+    {% else %}
+    {{ empty }}
+    {% endif %}
 {% else %}
     <h2>Publication not found!</h2>
 {% endif %}

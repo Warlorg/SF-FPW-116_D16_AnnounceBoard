@@ -34,8 +34,24 @@
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4"
                                                 href="/announce/create/">Create announce</a></li>
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4"
-                                                href="contact.html">Contact</a></li>
+                                                href="">Contacts</a></li>
                     </ul>
+                    <div class="navbar-nav ml-auto" style="float: right">
+                    {% if request.user.is_authenticated %}
+                        <ul>
+                            <li>User: {{ user.get_username }}</li>
+                            <li>
+                                <a href="{% url 'my_announces' %}">My announces</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'reacts_to_announces' %}">Reactions to my announces</a>
+                            </li>
+                        </ul>
+                    <a class="nav-link" href="{% url 'logout' %}">Log out</a>
+                    {% else %}
+                    <a class="nav-link" href="{% url 'accounts/login' %}"><b>Log In or Register</b></a>
+                    {% endif %}
+                </div>
                 </div>
             </div>
         </nav>
